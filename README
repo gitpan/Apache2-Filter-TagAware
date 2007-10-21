@@ -1,0 +1,50 @@
+NAME
+    Apache2::Filter::TagAware - Tag Awareneww overlay for Apache2::Filter
+
+SYNOPSIS
+    package Some::Filter;
+
+    use strict; use warnings; use Apache2::Filter::TagAware (); use
+    Apache2::RequestRec (); use Apache2::Const -compile => qw(OK DECLINED);
+
+    sub handler { my $f = shift; my $r = $f->r; $f =
+    Apache2::Filter::TagAware->new($f);
+
+        while ($f->read(my $buffer, 1024)) {
+            # filter stuff here
+            $f->print($buffer);
+        }
+        return Apache2::Const::OK;
+    }
+
+DESCRIPTION
+    Apache2::Filter::TagAware is an overlay(?) for Apache2::Filter which
+    applies filters the data you get back from calling read to ensure that
+    it doesn't split 'tags'. How a tag is defined is up to the user (or will
+    be when i finish that)
+
+  new
+    $f = Apache2::Filter::TagAware->new($f,%args);
+
+    * tag_regexp
+    a regular expression which defines a split tag. defaults to '(<[^>]*)$'
+
+  read
+    $f->read($buffer, $bytes)
+
+    read at most $bytes into $buffer. return the actual number of bytes
+    passed back to the caller.
+
+  ctx
+    See Apache2::Filter docs, behaves identically.
+
+CAVEATS
+    if you somehow end up with a split 'tag' that is larger that your read
+    bufferD, bad things will happen (this should likely be addressed)
+
+COPYRIGHT
+    Copyright 2006, Adam Prime (adam.prime@utoronto.ca)
+
+    This software is free. It is licensed under the same terms as Perl
+    itself.
+
