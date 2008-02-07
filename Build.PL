@@ -36,6 +36,7 @@ my $configure_requires = {
 my $build = $build_pkg->new(
     module_name         => 'Apache2::Filter::TagAware',
     license             => 'perl',
+    create_readme       => 1,
     dist_author         => 'Adam Prime (adam.prime@utoronto.ca)',
     requires            => {
         'mod_perl2'     => 2.0,
